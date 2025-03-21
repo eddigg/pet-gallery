@@ -2,9 +2,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+import { memo } from "react";
 
 export interface DogImage {
   url: string;
+  id?: string;
   breeds: {
     name: string;
     breed_group?: string;
@@ -16,7 +18,7 @@ interface DogGalleryProps {
   isLoading: boolean;
 }
 
-export default function DogGallery({ images, isLoading }: DogGalleryProps) {
+function DogGallery({ images, isLoading }: DogGalleryProps) {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center my-12">
@@ -33,13 +35,14 @@ export default function DogGallery({ images, isLoading }: DogGalleryProps) {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {images.map((image, index) => (
         <Card 
-          key={`${image.url}-${index}`} 
+          key={`${image.id || image.url}-${index}`} 
           className="overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
         >
           <div className="relative pb-[75%] bg-gray-100">
             <img 
               src={image.url} 
               alt="Random dog" 
+              loading="lazy"
               className="absolute inset-0 w-full h-full object-cover"
             />
           </div>
@@ -67,3 +70,6 @@ export default function DogGallery({ images, isLoading }: DogGalleryProps) {
     </div>
   );
 }
+
+// Memoize the component to prevent unnecessary re-renders
+export default memo(DogGallery);

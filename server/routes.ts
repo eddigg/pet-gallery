@@ -7,6 +7,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/dogs", async (req, res) => {
     try {
       const count = parseInt(req.query.count as string) || 3;
+      const page = parseInt(req.query.page as string) || 1;
       
       // Limit the count to a reasonable range
       const limitedCount = Math.min(Math.max(count, 1), 10);
